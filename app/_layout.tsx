@@ -1,29 +1,42 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Drawer } from "expo-router/drawer";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1}}>
+      <Drawer screenOptions={{
+        headerStyle:{ backgroundColor: '#fff'},
+        headerTintColor: '#8b5cf6',
+        drawerStyle: { backgroundColor: '#fff'},
+        drawerActiveTintColor: '#8b5cf6',
+        drawerInactiveTintColor: '#64748b',
+      }}>
+        <Drawer.Screen 
+          name="index"
+          options={{
+            title: 'Home',
+            drawerLabel: 'Home',
+            drawerIcon: ({color}) => ( <FontAwesome name="home" size={24} color={color} />)
+          }}
+        />
+        <Drawer.Screen
+          name='dashboard'
+          options={{
+            title: 'My Dashboard',
+            drawerLabel: 'Dashboard',
+            drawerIcon : ({color}) => (<FontAwesome name="dashboard" size={24} color={color}/>)
+          }}
+          />
+        <Drawer.Screen
+          name='settings'
+          options={{
+            title: 'Settings',
+            drawerLabel: 'Settings',
+            drawerIcon : ({color}) => (<FontAwesome name="cog" size={24} color={color}/>)
+          }}
+          />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }
